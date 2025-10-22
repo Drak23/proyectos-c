@@ -128,7 +128,7 @@ static void UpdateDrawFrame(void)
     if (Player2Position.x < 0) Player2Position.x = 0;
     else if (Player2Position.x >= GetScreenWidth()) Player2Position.x = GetScreenWidth() - 1;
     if (Player2Position.y < 0) Player2Position.y = 0;
-    else if (Player2Position.y >= GetScreenHeight()) Player2Position.y = GetScreenHeight() - 1;
+    else if (Player2Position.y >= GetScreenHeight()) Player2Position.y = GetScreenHeight() - 15;
 
     // Draw
     //----------------------------------------------------------------------------------
