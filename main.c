@@ -25,6 +25,8 @@
     #include <emscripten/emscripten.h>
 #endif
 
+
+
 //----------------------------------------------------------------------------------
 // Local Variables Definition (local to this module)
 //----------------------------------------------------------------------------------
@@ -53,11 +55,14 @@ int main()
     const int screenWidth = 800;
     const int screenHeight = 450;
 
+
+    SetTargetFPS(60);
+
     ballPosition.x = 400;
     ballPosition.y = 225;
     
-    ballSpeed.x =1;
-    ballSpeed.y =1;
+    ballSpeed.x = 1;
+    ballSpeed.y = 1;
 
     Player1Position.x = 50;
     Player1Position.y = 225;
@@ -117,27 +122,55 @@ static void UpdateDrawFrame(void)
     ballPosition.x += ballSpeed.x;
     ballPosition.y += ballSpeed.y;
 
-    if ((ballPosition.x >= (GetScreenWidth() - 15)) || (ballPosition.x <= 15)) ballSpeed.x *= -1.0f;
-    if ((ballPosition.y >= (GetScreenHeight() - 15)) || (ballPosition.y <= 15)) ballSpeed.y *= -1.05f;
-
+    //players limites
     if (Player1Position.x < 0) Player1Position.x = 0;
     else if (Player1Position.x >= GetScreenWidth()) Player1Position.x = GetScreenWidth() - 1;
     if (Player1Position.y < 0) Player1Position.y = 0;
-    else if (Player1Position.y >= GetScreenHeight() ) Player1Position.y = GetScreenHeight() - 1;
+    else if (Player1Position.y + Player1Size.y >= GetScreenHeight()) Player1Position.y = GetScreenHeight() - Player1Size.y;
 
     if (Player2Position.x < 0) Player2Position.x = 0;
     else if (Player2Position.x >= GetScreenWidth()) Player2Position.x = GetScreenWidth() - 1;
     if (Player2Position.y < 0) Player2Position.y = 0;
-    else if (Player2Position.y >= GetScreenHeight()) Player2Position.y = GetScreenHeight() - 1;
+    else if (Player2Position.y + Player2Size.y >= GetScreenHeight()) Player2Position.y = GetScreenHeight() - Player2Size.y;
+
+
+    //ball linites 
+    if ((ballPosition.x >= (GetScreenWidth() - 15)) || (ballPosition.x <= 15)) ballSpeed.x *= -1.0f;
+    if ((ballPosition.y >= (GetScreenHeight() - 15)) || (ballPosition.y <= 15)) ballSpeed.y *= -1.05f;
+
+    //bool hitObstacle = false;
+   // for (int i = 0; i < envItemsLength; i++)
+   // {
+    //    EnvItem *ei = envItems + i;
+    //    Vector2 *p = &(player->position);
+    //    if (ei->blocking &&
+    //        ei->rect.x <= p->x &&
+    //        ei->rect.x + ei->rect.width >= p->x &&
+    //        ei->rect.y >= p->y &&
+    //        ei->rect.y <= p->y + player->speed*delta)
+    //    {
+    //        hitObstacle = true;
+    //        player->speed = 0.0f;
+    //        p->y = ei->rect.y;
+   //         break;
+    //    }
+   // }
+
 
     // Draw
     //----------------------------------------------------------------------------------
     BeginDrawing();
-        ClearBackground(BLACK);
+        ClearBackground(LIGHTGRAY);
+
+
 
         DrawCircleV(ballPosition, 15, RED);
+        Vector2 zero = {0,0};
+        DrawRectangleV(zero, Player1Position, YELLOW);
         DrawRectangleV(Player1Position, Player1Size, BLUE);
         DrawRectangleV(Player2Position, Player2Size, GREEN);
+
+
 
         //DrawFPS(10, 10);
 
